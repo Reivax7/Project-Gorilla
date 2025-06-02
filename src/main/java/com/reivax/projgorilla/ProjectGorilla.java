@@ -4,6 +4,7 @@ import com.mojang.logging.LogUtils;
 import com.reivax.projgorilla.entity.ModEntities;
 import com.reivax.projgorilla.entity.client.GorillaRenderer;
 import com.reivax.projgorilla.item.ModItems;
+import com.reivax.projgorilla.loot.ModLootModifiers;
 import net.minecraft.client.renderer.entity.EntityRenderers;
 import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraft.world.item.SpawnEggItem;
@@ -34,6 +35,9 @@ public class ProjectGorilla {
 
         ModItems.register(modEventBus);
         ModEntities.register(modEventBus);
+
+        ModLootModifiers.register(modEventBus);
+
 
         modEventBus.addListener(this::commonSetup);
         modEventBus.addListener(this::addCreative);

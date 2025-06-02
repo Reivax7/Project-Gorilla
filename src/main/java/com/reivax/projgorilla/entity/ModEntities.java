@@ -22,4 +22,5 @@ public class ModEntities {
     public static void register(IEventBus eventBus) {
         ENTITY_TYPES.register(eventBus);
     }
+
 }
