@@ -10,7 +10,7 @@ import net.minecraft.resources.ResourceLocation;
 
 public class GorillaRenderer extends MobRenderer<GorillaEntity, GorillaModel<GorillaEntity>> {
     public GorillaRenderer(EntityRendererProvider.Context pContext) {
-        super(pContext, new GorillaModel<>(pContext.bakeLayer(ModModelLayers.GORILLA_LAYER)), 1.0f);
+        super(pContext, new GorillaModel<>(pContext.bakeLayer(ModModelLayers.GORILLA_LAYER)), 0.8f);
     }
 
     @Override

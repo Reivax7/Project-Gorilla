@@ -1,7 +1,11 @@
 package com.reivax.projgorilla.entity.custom;
 
 import com.reivax.projgorilla.entity.ModEntities;
+import com.reivax.projgorilla.entity.ai.GorillaAttackGoal;
 import com.reivax.projgorilla.item.ModItems;
+import net.minecraft.network.syncher.EntityDataAccessor;
+import net.minecraft.network.syncher.EntityDataSerializers;
+import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
@@ -10,6 +14,7 @@ import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.*;
+import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
 import net.minecraft.world.entity.animal.Animal;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -18,8 +23,14 @@ import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.Nullable;
 
 public class GorillaEntity extends Animal {
+    private static final EntityDataAccessor<Boolean> ATTACKING =
+            SynchedEntityData.defineId(GorillaEntity.class, EntityDataSerializers.BOOLEAN);
+
     public final AnimationState idleAnimationState = new AnimationState();
     private int idleAnimationTimeout = 0;
+
+    public final AnimationState attackAnimationState = new AnimationState();
+    public int attackAnimationTimeout = 0;
 
     public GorillaEntity(EntityType<? extends Animal> entityType, Level level) {
         super(entityType, level);
@@ -40,6 +51,17 @@ public class GorillaEntity extends Animal {
         } else {
             --this.idleAnimationTimeout;
         }
+
+        if (this.isAttacking() && attackAnimationTimeout <= 0) {
+            attackAnimationTimeout = 15;
+            attackAnimationState.start(this.tickCount);
+        } else {
+            --this.attackAnimationTimeout;
+        }
+
+        if (!this.isAttacking()) {
+            attackAnimationState.stop();
+        }
     }
 
     @Override
@@ -48,24 +70,43 @@ public class GorillaEntity extends Animal {
         this.walkAnimation.update(f, 1.5f);
     }
 
+    public void setAttacking(boolean attacking) {
+        this.entityData.set(ATTACKING, attacking);
+    }
+
+    public boolean isAttacking() {
+        return this.entityData.get(ATTACKING);
+    }
+
+
+    @Override
+    protected void defineSynchedData() {
+        super.defineSynchedData();
+        this.entityData.define(ATTACKING, false);
+    }
+
     @Override
     protected void registerGoals() {
         this.goalSelector.addGoal(0, new FloatGoal(this));
+        this.goalSelector.addGoal(1, new GorillaAttackGoal(this, 1, true));
         this.goalSelector.addGoal(1, new TemptGoal(this, 1.20, Ingredient.of(ModItems.BANANA.get()), false));
         this.goalSelector.addGoal(2, new FollowParentGoal(this, 1.10));
-        this.goalSelector.addGoal(3, new WaterAvoidingRandomStrollGoal(this, 1.10));
-        this.goalSelector.addGoal(4, new RandomLookAroundGoal(this));
-        this.goalSelector.addGoal(5, new LookAtPlayerGoal(this, Player.class, 3.0f));
-        this.goalSelector.addGoal(6, new BreedGoal(this, 1.10));
+        this.goalSelector.addGoal(3, new BreedGoal(this, 1.10));
+        this.goalSelector.addGoal(4, new WaterAvoidingRandomStrollGoal(this, 1.10));
+        this.goalSelector.addGoal(5, new RandomLookAroundGoal(this));
+        this.goalSelector.addGoal(6, new LookAtPlayerGoal(this, Player.class, 3.0f));
+
+
+        this.targetSelector.addGoal(1, new HurtByTargetGoal(this));
     }
 
     public static AttributeSupplier.Builder createAttributes() {
         return Animal.createLivingAttributes()
                 .add(Attributes.MAX_HEALTH, 30.0)
-                .add(Attributes.FOLLOW_RANGE, 240.0)
+                .add(Attributes.FOLLOW_RANGE, 24)
                 .add(Attributes.MOVEMENT_SPEED, 0.25)
                 .add(Attributes.ARMOR_TOUGHNESS, 0.1)
-                .add(Attributes.ATTACK_DAMAGE, 2.0)
+                .add(Attributes.ATTACK_DAMAGE, 4.5)
                 .add(Attributes.ATTACK_KNOCKBACK, 0.5);
     }
 
@@ -95,6 +136,6 @@ public class GorillaEntity extends Animal {
     @Nullable
     @Override
     protected SoundEvent getDeathSound() {
-        return SoundEvents.HORSE_DEATH;
+        return SoundEvents.HOGLIN_DEATH;
     }
 }

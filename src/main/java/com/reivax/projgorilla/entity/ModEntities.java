@@ -15,7 +15,7 @@ public class ModEntities {
 
     public static final RegistryObject<EntityType<GorillaEntity>> GORILLA =
             ENTITY_TYPES.register("gorilla", () -> EntityType.Builder.of(GorillaEntity::new, MobCategory.CREATURE)
-                    .sized(1.2f,2.0f).build("gorilla"));
+                    .sized(1.0f,2.0f).build("gorilla"));
 
 
 

@@ -1,5 +1,10 @@
 {
   "item.projgorilla.banana": "Banana",
-  "item.projgorilla.gorilla_spawn_egg": "Gorilla Spawn Egg"
+  "item.projgorilla.gorilla_fur": "Gorilla Fur",
+  "item.projgorilla.gorilla_spawn_egg": "Gorilla Spawn Egg",
 
+  "item.projgorilla.gorilla_fur_helmet": "Gorilla Fur Helmet",
+  "item.projgorilla.gorilla_fur_chestplate": "Gorilla Fur Chestplate",
+  "item.projgorilla.gorilla_fur_leggings": "Gorilla Fur Leggings",
+  "item.projgorilla.gorilla_fur_boots": "Gorilla Fur Boots"
 }

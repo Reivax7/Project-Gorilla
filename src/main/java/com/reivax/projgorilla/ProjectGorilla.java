@@ -39,6 +39,7 @@ public class ProjectGorilla {
         ModLootModifiers.register(modEventBus);
 
 
+
         modEventBus.addListener(this::commonSetup);
         modEventBus.addListener(this::addCreative);
 
@@ -52,11 +53,31 @@ public class ProjectGorilla {
 
     // Add the example block item to the building blocks tab
     private void addCreative(BuildCreativeModeTabContentsEvent event) {
-        if (event.getTabKey() == CreativeModeTabs.FOOD_AND_DRINKS) {
+
+           if (event.getTabKey() == CreativeModeTabs.FOOD_AND_DRINKS)
             event.accept(ModItems.BANANA);
-        }
-            if (event.getTabKey() == CreativeModeTabs.SPAWN_EGGS)
+
+         if (event.getTabKey() == CreativeModeTabs.SPAWN_EGGS)
                 event.accept(ModItems.GORILLA_SPAWN_EGG);
+
+          if (event.getTabKey() == CreativeModeTabs.INGREDIENTS)
+              event.accept(ModItems.GORILLA_FUR);
+
+        if (event.getTabKey() == CreativeModeTabs.COMBAT)
+            event.accept(ModItems.GORILLA_FUR_HELMET);
+
+        if (event.getTabKey() == CreativeModeTabs.COMBAT)
+            event.accept(ModItems.GORILLA_FUR_CHESTPLATE);
+
+        if (event.getTabKey() == CreativeModeTabs.COMBAT)
+            event.accept(ModItems.GORILLA_FUR_LEGGINGS);
+
+        if (event.getTabKey() == CreativeModeTabs.COMBAT)
+            event.accept(ModItems.GORILLA_FUR_BOOTS);
+
+
+
+
         }
 
 

@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "   ",
+    "G G",
+    "G G"
+  ],
+  "key": {
+    "G": {
+      "item": "projgorilla:gorilla_fur"
+    }
+  },
+  "result": {
+    "item": "projgorilla:gorilla_fur_boots"
+  }
+}
